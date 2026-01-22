@@ -6,6 +6,7 @@ export interface TimeEntry {
     id: string;
     taskId: string; // Référence à la tâche
     userId: string; // Référence à l'utilisateur
+    projectId: string; // Référence au projet
     startTime: Date;
     endTime: Date | null; // null si le timer est en cours
     duration: number; // Durée en minutes
@@ -20,6 +21,7 @@ export interface TimeEntry {
 export interface CreateTimeEntryDto {
     taskId: string;
     userId: string;
+    projectId: string;
     startTime: Date;
     endTime?: Date | null;
     duration?: number;
@@ -40,7 +42,6 @@ export interface UpdateTimeEntryDto {
  */
 export interface TimeEntryWithDetails extends TimeEntry {
     taskTitle?: string;
-    projectId?: string;
     projectName?: string;
     userName?: string;
 }

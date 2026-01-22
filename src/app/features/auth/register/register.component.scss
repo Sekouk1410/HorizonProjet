@@ -1,0 +1,5 @@
+.auth-container { max-width: 360px; margin: 40px auto; display: flex; flex-direction: column; gap: 12px; }
+form { display: flex; flex-direction: column; gap: 8px; }
+input, select { padding: 8px; }
+button { padding: 10px; }
+.error { color: #c0392b; font-size: 0.9rem; }

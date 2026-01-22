@@ -1,0 +1,26 @@
+<div class="auth-container">
+  <h2>Créer un compte</h2>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <label>Nom d'utilisateur</label>
+    <input type="text" formControlName="userName" />
+    <div *ngIf="form.controls.userName.invalid && form.controls.userName.touched" class="error">Nom requis</div>
+
+    <label>Email</label>
+    <input type="email" formControlName="email" />
+    <div *ngIf="form.controls.email.invalid && form.controls.email.touched" class="error">Email valide requis</div>
+
+    <label>Mot de passe</label>
+    <input type="password" formControlName="password" />
+    <div *ngIf="form.controls.password.invalid && form.controls.password.touched" class="error">Mot de passe requis</div>
+
+    <label>Rôle</label>
+    <select formControlName="role">
+      <option [ngValue]="Role.MEMBER">Membre</option>
+      <option [ngValue]="Role.MANAGER">Manager</option>
+    </select>
+
+    <button type="submit" [disabled]="form.invalid || loading">Créer le compte</button>
+    <div *ngIf="error" class="error">{{ error }}</div>
+  </form>
+  <p>Déjà un compte ? <a routerLink="/auth/login">Se connecter</a></p>
+</div>

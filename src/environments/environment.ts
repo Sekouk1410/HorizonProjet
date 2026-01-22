@@ -2,11 +2,11 @@
 export const environment = {
   production: false,
   firebase: {
-    apiKey: "VOTRE_API_KEY",
-    authDomain: "VOTRE_AUTH_DOMAIN",
-    projectId: "VOTRE_PROJECT_ID",
-    storageBucket: "VOTRE_STORAGE_BUCKET",
-    messagingSenderId: "VOTRE_MESSAGING_SENDER_ID",
-    appId: "VOTRE_APP_ID"
+    apiKey: "AIzaSyDzrCl6rL_91PoVflJI4qO-wssTFNDQkQs",
+  authDomain: "horizon-projet.firebaseapp.com",
+  projectId: "horizon-projet",
+  storageBucket: "horizon-projet.firebasestorage.app",
+  messagingSenderId: "417660341744",
+  appId: "1:417660341744:web:91f054577ed8964d616135"
   }
 };

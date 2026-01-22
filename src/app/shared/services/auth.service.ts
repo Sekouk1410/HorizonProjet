@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Auth, User as FirebaseUser, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from '@angular/fire/auth';
-import { Firestore, doc, docData, setDoc, collection } from '@angular/fire/firestore';
+import { Firestore, doc, docData, setDoc, collection, getDoc } from '@angular/fire/firestore';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Role, User } from '../models/user.model';
 
@@ -78,7 +78,7 @@ export class AuthService {
 
   private async getUserProfileOnce(uid: string): Promise<User | undefined> {
     const ref = doc(this.db, `users/${uid}`);
-    const snap = await (await import('firebase/firestore')).getDoc(ref as any);
+    const snap = await getDoc(ref as any);
     return (snap.exists() ? (snap.data() as User) : undefined);
   }
 }

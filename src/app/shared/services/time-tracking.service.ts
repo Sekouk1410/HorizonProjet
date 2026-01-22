@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, addDoc, collection, collectionData, deleteDoc, doc, docData, orderBy, query, updateDoc, where } from '@angular/fire/firestore';
+import { Firestore, addDoc, collection, collectionData, deleteDoc, doc, docData, orderBy, query, updateDoc, where, getDoc, getDocs } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { CreateTimeEntryDto, TimeEntry, TimeStats, UpdateTimeEntryDto } from '../models/time-entry.model';
 
@@ -18,16 +18,22 @@ export class TimeTrackingService {
     return collectionData(q, { idField: 'id' }) as Observable<TimeEntry[]>;
   }
 
+  listByProject$(projectId: string): Observable<TimeEntry[]> {
+    const q = query(this.col, where('projectId', '==', projectId), orderBy('startTime', 'desc'));
+    return collectionData(q, { idField: 'id' }) as Observable<TimeEntry[]>;
+  }
+
   get$(id: string): Observable<TimeEntry | undefined> {
     const ref = doc(this.db, `timeEntries/${id}`);
     return docData(ref, { idField: 'id' }) as Observable<TimeEntry | undefined>;
   }
 
-  async startTimer(taskId: string, userId: string, description?: string): Promise<string> {
+  async startTimer(taskId: string, userId: string, projectId: string, description?: string): Promise<string> {
     const now = new Date();
     const entry: Omit<TimeEntry, 'id'> = {
       taskId,
       userId,
+      projectId,
       startTime: now,
       endTime: null,
       duration: 0,
@@ -41,7 +47,7 @@ export class TimeTrackingService {
 
   async stopTimer(id: string): Promise<void> {
     const ref = doc(this.db, `timeEntries/${id}`);
-    const snap = await (await import('firebase/firestore')).getDoc(ref as any);
+    const snap = await getDoc(ref as any);
     if (!snap.exists()) return;
     const data = snap.data() as TimeEntry;
     const endTime = new Date();
@@ -54,6 +60,7 @@ export class TimeTrackingService {
     const entry: Omit<TimeEntry, 'id'> = {
       taskId: data.taskId,
       userId: data.userId,
+      projectId: data.projectId,
       startTime: data.startTime,
       endTime: data.endTime ?? null,
       duration: data.duration ?? 0,
@@ -76,7 +83,6 @@ export class TimeTrackingService {
   }
 
   async computeStatsForTask(taskId: string): Promise<TimeStats> {
-    const { getDocs } = await import('firebase/firestore');
     const q = query(this.col, where('taskId', '==', taskId));
     const snaps = await getDocs(q as any);
     let totalMinutes = 0;
