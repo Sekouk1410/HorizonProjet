@@ -4,7 +4,10 @@ import { authGuard } from './core/guards/auth.guard';
 import { LoginComponent } from './features/auth/login/login.component';
 import { RegisterComponent } from './features/auth/register/register.component';
 import { MainLayoutComponent } from './features/layout/main-layout.component';
-import { HomeComponent } from './features/home/home.component';
+
+import { Dashboard } from './features/dashboard/dashboard';
+import { ProjectFormComponent } from './features/projects/project-form/project-form.component';
+
 
 export const routes: Routes = [
   {
@@ -20,7 +23,11 @@ export const routes: Routes = [
     component: MainLayoutComponent,
     canActivate: [authGuard],
     children: [
-      { path: '', component: HomeComponent },
+      { path: '', component: Dashboard },
+      { path: 'dashboard', component: Dashboard },
+      { path: 'projects/new', component: ProjectFormComponent },
+      { path: 'projects/:id', loadComponent: () => import('./features/projects/project-details/project-details.component').then(m => m.ProjectDetailsComponent) },
+      { path: 'projects/:id/edit', loadComponent: () => import('./features/projects/project-edit/project-edit.component').then(m => m.ProjectEditComponent) },
     ],
   },
   { path: '**', redirectTo: '' },

@@ -1,0 +1,13 @@
+<section>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+    <div>
+      <label for="name">Nom</label>
+      <input id="name" type="text" formControlName="name" />
+    </div>
+    <div>
+      <label for="description">Description</label>
+      <textarea id="description" rows="4" formControlName="description"></textarea>
+    </div>
+    <button type="submit">Enregistrer</button>
+  </form>
+</section>

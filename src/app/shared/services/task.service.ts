@@ -1,26 +1,23 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, addDoc, collection, collectionData, deleteDoc, doc, docData, orderBy, query, updateDoc, where } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Observable, firstValueFrom } from 'rxjs';
 import { CreateTaskDto, Task, UpdateTaskDto } from '../models/task.model';
+import { API_BASE } from '../config';
 
 @Injectable({ providedIn: 'root' })
 export class TaskService {
-  private db = inject(Firestore);
-  private col = collection(this.db, 'tasks');
+  private http = inject(HttpClient);
 
   listByProject$(projectId: string): Observable<Task[]> {
-    const q = query(this.col, where('projectId', '==', projectId), orderBy('order', 'asc'));
-    return collectionData(q, { idField: 'id' }) as Observable<Task[]>;
+    return this.http.get<Task[]>(`${API_BASE}/tasks`, { params: { projectId, _sort: 'order', _order: 'asc' } as any });
   }
 
   listSubtasks$(parentTaskId: string): Observable<Task[]> {
-    const q = query(this.col, where('parentTaskId', '==', parentTaskId), orderBy('order', 'asc'));
-    return collectionData(q, { idField: 'id' }) as Observable<Task[]>;
+    return this.http.get<Task[]>(`${API_BASE}/tasks`, { params: { parentTaskId, _sort: 'order', _order: 'asc' } as any });
   }
 
   get$(id: string): Observable<Task | undefined> {
-    const ref = doc(this.db, `tasks/${id}`);
-    return docData(ref, { idField: 'id' }) as Observable<Task | undefined>;
+    return this.http.get<Task>(`${API_BASE}/tasks/${id}`);
   }
 
   async create(data: CreateTaskDto): Promise<string> {
@@ -42,22 +39,19 @@ export class TaskService {
       order: Date.now(),
       updatedAt: now,
     } as any;
-    const ref = await addDoc(this.col, task as any);
-    return ref.id;
+    const res = await firstValueFrom(this.http.post<Task>(`${API_BASE}/tasks`, task as any));
+    return (res as any)?.id?.toString() ?? '';
   }
 
   async update(id: string, patch: UpdateTaskDto): Promise<void> {
-    const ref = doc(this.db, `tasks/${id}`);
-    await updateDoc(ref, { ...patch, updatedAt: new Date() } as any);
+    await firstValueFrom(this.http.patch(`${API_BASE}/tasks/${id}`, { ...patch, updatedAt: new Date() } as any));
   }
 
   async delete(id: string): Promise<void> {
-    const ref = doc(this.db, `tasks/${id}`);
-    await deleteDoc(ref);
+    await firstValueFrom(this.http.delete(`${API_BASE}/tasks/${id}`));
   }
 
   async reorder(id: string, newOrder: number): Promise<void> {
-    const ref = doc(this.db, `tasks/${id}`);
-    await updateDoc(ref, { order: newOrder, updatedAt: new Date() } as any);
+    await firstValueFrom(this.http.patch(`${API_BASE}/tasks/${id}`, { order: newOrder, updatedAt: new Date() } as any));
   }
 }

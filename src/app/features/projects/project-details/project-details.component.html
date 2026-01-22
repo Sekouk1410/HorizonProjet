@@ -1,0 +1,11 @@
+<section *ngIf="project$ | async as project; else loading">
+  <h2>Détails du projet</h2>
+  <p><strong>Nom:</strong> {{ project.name }}</p>
+  <p><strong>Description:</strong> {{ project.description || '—' }}</p>
+  <p><strong>Status:</strong> {{ project.status }}</p>
+  <p><strong>Début:</strong> {{ project.startDate | date:'mediumDate' }}</p>
+  <p><strong>Fin:</strong> {{ project.endDate | date:'mediumDate' }}</p>
+</section>
+<ng-template #loading>
+  <p>Chargement...</p>
+</ng-template>

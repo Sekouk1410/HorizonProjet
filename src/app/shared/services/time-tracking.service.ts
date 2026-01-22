@@ -1,31 +1,27 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, addDoc, collection, collectionData, deleteDoc, doc, docData, orderBy, query, updateDoc, where, getDoc, getDocs } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Observable, firstValueFrom } from 'rxjs';
 import { CreateTimeEntryDto, TimeEntry, TimeStats, UpdateTimeEntryDto } from '../models/time-entry.model';
+import { API_BASE } from '../config';
 
 @Injectable({ providedIn: 'root' })
 export class TimeTrackingService {
-  private db = inject(Firestore);
-  private col = collection(this.db, 'timeEntries');
+  private http = inject(HttpClient);
 
   listByTask$(taskId: string): Observable<TimeEntry[]> {
-    const q = query(this.col, where('taskId', '==', taskId), orderBy('startTime', 'desc'));
-    return collectionData(q, { idField: 'id' }) as Observable<TimeEntry[]>;
+    return this.http.get<TimeEntry[]>(`${API_BASE}/timeEntries`, { params: { taskId, _sort: 'startTime', _order: 'desc' } as any });
   }
 
   listByUser$(userId: string): Observable<TimeEntry[]> {
-    const q = query(this.col, where('userId', '==', userId), orderBy('startTime', 'desc'));
-    return collectionData(q, { idField: 'id' }) as Observable<TimeEntry[]>;
+    return this.http.get<TimeEntry[]>(`${API_BASE}/timeEntries`, { params: { userId, _sort: 'startTime', _order: 'desc' } as any });
   }
 
   listByProject$(projectId: string): Observable<TimeEntry[]> {
-    const q = query(this.col, where('projectId', '==', projectId), orderBy('startTime', 'desc'));
-    return collectionData(q, { idField: 'id' }) as Observable<TimeEntry[]>;
+    return this.http.get<TimeEntry[]>(`${API_BASE}/timeEntries`, { params: { projectId, _sort: 'startTime', _order: 'desc' } as any });
   }
 
   get$(id: string): Observable<TimeEntry | undefined> {
-    const ref = doc(this.db, `timeEntries/${id}`);
-    return docData(ref, { idField: 'id' }) as Observable<TimeEntry | undefined>;
+    return this.http.get<TimeEntry>(`${API_BASE}/timeEntries/${id}`);
   }
 
   async startTimer(taskId: string, userId: string, projectId: string, description?: string): Promise<string> {
@@ -41,18 +37,22 @@ export class TimeTrackingService {
       createdAt: now,
       updatedAt: now,
     };
-    const ref = await addDoc(this.col, entry as any);
-    return ref.id;
+    const res = await firstValueFrom(this.http.post<TimeEntry>(`${API_BASE}/timeEntries`, entry as any));
+    return (res as TimeEntry & { id?: string | number })?.id?.toString() ?? '';
   }
 
   async stopTimer(id: string): Promise<void> {
-    const ref = doc(this.db, `timeEntries/${id}`);
-    const snap = await getDoc(ref as any);
-    if (!snap.exists()) return;
-    const data = snap.data() as TimeEntry;
-    const endTime = new Date();
-    const duration = Math.max(0, Math.round((endTime.getTime() - new Date(data.startTime).getTime()) / 60000));
-    await updateDoc(ref, { endTime, duration, updatedAt: new Date() } as any);
+    const current = (await firstValueFrom(
+  this.http.get<TimeEntry>(`${API_BASE}/timeEntries/${id}`)
+)) as TimeEntry;
+const endTime = new Date();
+const duration = Math.max(
+  0,
+  Math.round((endTime.getTime() - new Date(current.startTime as unknown as string | Date).getTime()) / 60000)
+);
+await firstValueFrom(
+  this.http.patch<TimeEntry>(`${API_BASE}/timeEntries/${id}`, { endTime, duration, updatedAt: new Date() } as any)
+);
   }
 
   async create(data: CreateTimeEntryDto): Promise<string> {
@@ -68,34 +68,28 @@ export class TimeTrackingService {
       createdAt: now,
       updatedAt: now,
     };
-    const ref = await addDoc(this.col, entry as any);
-    return ref.id;
+    const res = await firstValueFrom(this.http.post<TimeEntry>(`${API_BASE}/timeEntries`, entry as any));
+    return (res as any)?.id?.toString() ?? '';
   }
 
   async update(id: string, patch: UpdateTimeEntryDto): Promise<void> {
-    const ref = doc(this.db, `timeEntries/${id}`);
-    await updateDoc(ref, { ...patch, updatedAt: new Date() } as any);
+    await firstValueFrom(this.http.patch<TimeEntry>(`${API_BASE}/timeEntries/${id}`, { ...patch, updatedAt: new Date() } as any));
   }
 
   async delete(id: string): Promise<void> {
-    const ref = doc(this.db, `timeEntries/${id}`);
-    await deleteDoc(ref);
+    await firstValueFrom(this.http.delete(`${API_BASE}/timeEntries/${id}`));
   }
 
   async computeStatsForTask(taskId: string): Promise<TimeStats> {
-    const q = query(this.col, where('taskId', '==', taskId));
-    const snaps = await getDocs(q as any);
-    let totalMinutes = 0;
-    snaps.forEach((s) => {
-      const e = s.data() as TimeEntry;
-      totalMinutes += e.duration ?? 0;
-    });
+    const entries = await firstValueFrom(this.http.get<TimeEntry[]>(`${API_BASE}/timeEntries`, { params: { taskId } as any }));
+    const totalMinutes = entries.reduce((acc, e) => acc + (e.duration ?? 0), 0);
+    const count = entries.length;
     return {
       totalMinutes,
       totalHours: +(totalMinutes / 60).toFixed(2),
       totalDays: +(totalMinutes / 60 / 8).toFixed(2),
-      entriesCount: snaps.size,
-      averageSessionMinutes: snaps.size ? +(totalMinutes / snaps.size).toFixed(2) : 0,
+      entriesCount: count,
+      averageSessionMinutes: count ? +(totalMinutes / count).toFixed(2) : 0,
     };
   }
 }

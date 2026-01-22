@@ -1,0 +1,61 @@
+form {
+  display: grid;
+  gap: 1rem;
+  max-width: 600px;
+}
+
+label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+  color: #111827;
+}
+
+input,
+textarea {
+  width: 100%;
+  padding: .6rem .8rem;
+  border: 1px solid #d1d5db;
+  border-radius: .6rem;
+  outline: none;
+  background: #ffffff;
+}
+
+textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+input:focus,
+textarea:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99,102,241,.15);
+}
+
+/* Etat invalide visuel */
+input.invalid,
+textarea.invalid {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239,68,68,.12);
+}
+
+small {
+  color: #b91c1c;
+  display: block;
+  margin-top: .25rem;
+}
+
+button[type="submit"] {
+  justify-self: start;
+  background: #111827;
+  color: #ffffff;
+  border: 0;
+  border-radius: .6rem;
+  padding: .6rem .9rem;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+button[type="submit"]:hover {
+  background: #1f2937;
+}

@@ -1,21 +1,19 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, addDoc, collection, collectionData, deleteDoc, doc, docData, orderBy, query, updateDoc, where } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Observable, firstValueFrom } from 'rxjs';
 import { CreateMilestoneDto, Milestone, UpdateMilestoneDto } from '../models/milestone.model';
+import { API_BASE } from '../config';
 
 @Injectable({ providedIn: 'root' })
 export class MilestoneService {
-  private db = inject(Firestore);
-  private col = collection(this.db, 'milestones');
+  private http = inject(HttpClient);
 
   listByProject$(projectId: string): Observable<Milestone[]> {
-    const q = query(this.col, where('projectId', '==', projectId), orderBy('date', 'asc'));
-    return collectionData(q, { idField: 'id' }) as Observable<Milestone[]>;
+    return this.http.get<Milestone[]>(`${API_BASE}/milestones`, { params: { projectId, _sort: 'date', _order: 'asc' } as any });
   }
 
   get$(id: string): Observable<Milestone | undefined> {
-    const ref = doc(this.db, `milestones/${id}`);
-    return docData(ref, { idField: 'id' }) as Observable<Milestone | undefined>;
+    return this.http.get<Milestone>(`${API_BASE}/milestones/${id}`);
   }
 
   async create(data: CreateMilestoneDto): Promise<string> {
@@ -29,17 +27,15 @@ export class MilestoneService {
       createdAt: now,
       updatedAt: now,
     } as any;
-    const ref = await addDoc(this.col, milestone as any);
-    return ref.id;
+    const res = await firstValueFrom(this.http.post<Milestone>(`${API_BASE}/milestones`, milestone as any));
+    return (res as any)?.id?.toString() ?? '';
   }
 
   async update(id: string, patch: UpdateMilestoneDto): Promise<void> {
-    const ref = doc(this.db, `milestones/${id}`);
-    await updateDoc(ref, { ...patch, updatedAt: new Date() } as any);
+    await firstValueFrom(this.http.patch(`${API_BASE}/milestones/${id}`, { ...patch, updatedAt: new Date() } as any));
   }
 
   async delete(id: string): Promise<void> {
-    const ref = doc(this.db, `milestones/${id}`);
-    await deleteDoc(ref);
+    await firstValueFrom(this.http.delete(`${API_BASE}/milestones/${id}`));
   }
 }

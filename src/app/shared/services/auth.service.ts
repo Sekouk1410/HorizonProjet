@@ -1,69 +1,41 @@
-import { Injectable, inject } from '@angular/core';
-import { Auth, User as FirebaseUser, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from '@angular/fire/auth';
-import { Firestore, doc, docData, setDoc, collection, getDoc } from '@angular/fire/firestore';
+import { Injectable } from '@angular/core';
+import { initializeApp, getApps } from 'firebase/app';
+import { getAuth, onAuthStateChanged, User as FirebaseUser, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile } from 'firebase/auth';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Role, User } from '../models/user.model';
+import { firebaseConfig } from '../firebase-config';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private auth = inject(Auth);
-  private db = inject(Firestore);
+  private auth = getAuth(this.ensureFirebaseApp());
 
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   currentUser$ = this.currentUserSubject.asObservable();
 
   constructor() {
-    onAuthStateChanged(this.auth, async (fbUser) => {
+    onAuthStateChanged(this.auth, (fbUser) => {
       if (!fbUser) {
         this.currentUserSubject.next(null);
         return;
       }
-      const user = await this.getUserProfileOnce(fbUser.uid);
-      this.currentUserSubject.next(user ?? null);
+      const user = this.mapFirebaseUser(fbUser);
+      this.currentUserSubject.next(user);
     });
   }
 
-  async register(email: string, password: string, userName: string, role: Role = Role.MEMBER): Promise<User> {
+  async register(email: string, password: string, userName: string): Promise<User> {
     const cred = await createUserWithEmailAndPassword(this.auth, email, password);
     await updateProfile(cred.user, { displayName: userName });
-
-    const user: User = {
-      id: cred.user.uid,
-      userName,
-      email,
-      role,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
-
-    const usersCol = collection(this.db, 'users');
-    const userRef = doc(usersCol, user.id);
-    await setDoc(userRef, { ...user });
+    const user = this.mapFirebaseUser(cred.user);
     this.currentUserSubject.next(user);
     return user;
   }
 
   async login(email: string, password: string): Promise<User> {
     const cred = await signInWithEmailAndPassword(this.auth, email, password);
-    const profile = await this.getUserProfileOnce(cred.user.uid);
-    // Si pas de profil (rare), on le crée minimalement
-    if (!profile) {
-      const user: User = {
-        id: cred.user.uid,
-        userName: cred.user.displayName || email.split('@')[0],
-        email: cred.user.email || email,
-        role: Role.MEMBER,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      };
-      const usersCol = collection(this.db, 'users');
-      const userRef = doc(usersCol, user.id);
-      await setDoc(userRef, { ...user });
-      this.currentUserSubject.next(user);
-      return user;
-    }
-    this.currentUserSubject.next(profile);
-    return profile;
+    const user = this.mapFirebaseUser(cred.user);
+    this.currentUserSubject.next(user);
+    return user;
   }
 
   logout(): Promise<void> {
@@ -71,14 +43,17 @@ export class AuthService {
     return signOut(this.auth);
   }
 
-  getUserProfile$(uid: string): Observable<User | undefined> {
-    const ref = doc(this.db, `users/${uid}`);
-    return docData(ref) as Observable<User | undefined>;
+  private mapFirebaseUser(fb: FirebaseUser): User {
+    return {
+      id: fb.uid,
+      userName: fb.displayName || (fb.email ? fb.email.split('@')[0] : 'Utilisateur'),
+      email: fb.email || '',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    } as any;
   }
 
-  private async getUserProfileOnce(uid: string): Promise<User | undefined> {
-    const ref = doc(this.db, `users/${uid}`);
-    const snap = await getDoc(ref as any);
-    return (snap.exists() ? (snap.data() as User) : undefined);
+  private ensureFirebaseApp() {
+    return getApps().length ? getApps()[0] : initializeApp(firebaseConfig as any);
   }
 }

@@ -13,12 +13,6 @@
     <input type="password" formControlName="password" />
     <div *ngIf="form.controls.password.invalid && form.controls.password.touched" class="error">Mot de passe requis</div>
 
-    <label>Rôle</label>
-    <select formControlName="role">
-      <option [ngValue]="Role.MEMBER">Membre</option>
-      <option [ngValue]="Role.MANAGER">Manager</option>
-    </select>
-
     <button type="submit" [disabled]="form.invalid || loading">Créer le compte</button>
     <div *ngIf="error" class="error">{{ error }}</div>
   </form>

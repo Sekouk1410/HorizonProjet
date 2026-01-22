@@ -1,0 +1,106 @@
+<section class="dashboard">
+  <h2 class="title">Dashboard Projets</h2>
+
+  <div class="toolbar">
+    <button type="button" class="btn-primary" (click)="openCreateModal()">Créer un projet</button>
+  </div>
+
+  <div class="controls">
+    <input
+      class="control-input"
+      type="search"
+      placeholder="Rechercher un projet..."
+      (input)="setSearch($any($event.target).value)" />
+    <select class="control-select" (change)="setFilter($any($event.target).value)">
+      <option value="all" selected>Tous</option>
+      <option value="active">En cours</option>
+      <option value="done">Terminés</option>
+    </select>
+    <span class="count-badge">{{ (view$ | async)?.length || 0 }} projet(s)</span>
+  </div>
+
+  <ng-container *ngIf="(view$ | async) as list; else loadingTpl">
+    <div *ngIf="list.length === 0; else listTpl" class="empty">
+      Aucun projet trouvé. Créez votre premier projet ci-dessus.
+    </div>
+    <ng-template #listTpl>
+      <div class="grid">
+        <app-project-card
+          *ngFor="let p of list"
+          [project]="p"
+          (view)="onView($event)"
+          (edit)="onEdit($event)"
+          (remove)="onRemove($event)">
+        </app-project-card>
+      </div>
+    </ng-template>
+  </ng-container>
+
+  <ng-template #loadingTpl>
+    <div class="loading">Chargement des projets...</div>
+  </ng-template>
+
+  <!-- Modal création de projet -->
+  <div class="modal-backdrop" *ngIf="showCreateModal" (click)="closeCreateModal()"></div>
+  <div class="modal" *ngIf="showCreateModal" role="dialog" aria-modal="true">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Créer un nouveau projet</h3>
+        <button type="button" class="icon-close" aria-label="Fermer" (click)="closeCreateModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <app-project-form (submitProject)="onCreate($event)"></app-project-form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal modification de projet -->
+  <div class="modal-backdrop" *ngIf="showEditModal" (click)="closeEditModal()"></div>
+  <div class="modal" *ngIf="showEditModal" role="dialog" aria-modal="true">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Éditer le projet</h3>
+        <button type="button" class="icon-close" aria-label="Fermer" (click)="closeEditModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <app-project-edit
+          [projectId]="editingProjectId"
+          (close)="closeEditModal()"
+          (saved)="saved => saved === 'success' ? showToast('Projet mis à jour avec succès','success') : showToast('Échec de la mise à jour du projet','error')"
+        ></app-project-edit>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Toast notifications -->
+<div class="toast-container" aria-live="polite" aria-atomic="true">
+  <div
+    class="toast"
+    *ngFor="let t of toasts"
+    [class.success]="t.type === 'success'"
+    [class.error]="t.type === 'error'"
+  >
+    {{ t.message }}
+  </div>
+  
+</div>
+
+<!-- Confirm delete modal -->
+<div class="modal-backdrop" *ngIf="showConfirmDelete" (click)="cancelDelete()"></div>
+<div class="modal" *ngIf="showConfirmDelete" role="dialog" aria-modal="true">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Supprimer le projet</h3>
+      <button type="button" class="icon-close" aria-label="Fermer" (click)="cancelDelete()">×</button>
+    </div>
+    <div class="modal-body">
+      <p>Confirmer la suppression de ce projet ? Cette action est définitive.</p>
+      <div style="display:flex; gap:.5rem; justify-content:flex-end; margin-top:1rem;">
+        <button type="button" class="btn-secondary" (click)="cancelDelete()">Annuler</button>
+        <button type="button" class="btn-danger" (click)="confirmDelete()">Supprimer</button>
+      </div>
+    </div>
+  </div>
+  
+</div>

@@ -1,26 +1,31 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, addDoc, collection, collectionData, deleteDoc, doc, docData, query, updateDoc, where, orderBy } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+
+import { Observable, map, firstValueFrom } from 'rxjs';
 import { CreateProjectDto, Project, StatusProject, UpdateProjectDto } from '../models/project.model';
+import { USE_JSON_API, API_BASE } from '../config';
 
 @Injectable({ providedIn: 'root' })
 export class ProjectService {
-  private db = inject(Firestore);
-  private col = collection(this.db, 'projects');
+  private http = inject(HttpClient);
 
   listAll$(): Observable<Project[]> {
-    const q = query(this.col, orderBy('createdAt', 'desc'));
-    return collectionData(q, { idField: 'id' }) as Observable<Project[]>;
+    return this.http.get<Project[]>(`${API_BASE}/projects?_sort=createdAt&_order=desc`);
   }
 
   listByMember$(userId: string): Observable<Project[]> {
-    const q = query(this.col, where('members', 'array-contains', userId), orderBy('createdAt', 'desc'));
-    return collectionData(q, { idField: 'id' }) as Observable<Project[]>;
+    // json-server ne supporte pas array-contains, on filtre côté client
+    return this.http.get<Project[]>(`${API_BASE}/projects`).pipe(
+      map((list: Project[]) => list.filter(p => Array.isArray(p.members) && p.members.includes(userId)))
+    );
+  }
+
+  listByCreator$(userId: string): Observable<Project[]> {
+    return this.http.get<Project[]>(`${API_BASE}/projects?createdBy=${encodeURIComponent(userId)}`);
   }
 
   get$(id: string): Observable<Project | undefined> {
-    const ref = doc(this.db, `projects/${id}`);
-    return docData(ref, { idField: 'id' }) as Observable<Project | undefined>;
+    return this.http.get<Project>(`${API_BASE}/projects/${id}`);
   }
 
   async create(data: CreateProjectDto, createdBy: string): Promise<string> {
@@ -32,35 +37,33 @@ export class ProjectService {
       endDate: data.endDate,
       timeSpent: 0,
       status: data.status ?? StatusProject.IN_PROGRESS,
-      members: data.members ?? [createdBy],
+      members: Array.from(new Set([...(data.members ?? []), createdBy])),
       finishedAt: null,
       createdBy,
       createdAt: now,
       updatedAt: now,
     };
-    const docRef = await addDoc(this.col, project as any);
-    return docRef.id;
+    const res = await firstValueFrom(this.http.post<Project>(`${API_BASE}/projects`, project as any));
+    return (res as any)?.id?.toString() ?? '';
   }
 
   async update(id: string, patch: UpdateProjectDto): Promise<void> {
-    const ref = doc(this.db, `projects/${id}`);
-    await updateDoc(ref, { ...patch, updatedAt: new Date() } as any);
+    await firstValueFrom(this.http.patch(`${API_BASE}/projects/${id}`, { ...patch, updatedAt: new Date() } as any));
   }
 
   async delete(id: string): Promise<void> {
-    const ref = doc(this.db, `projects/${id}`);
-    await deleteDoc(ref);
+    await firstValueFrom(this.http.delete(`${API_BASE}/projects/${id}`));
   }
 
   async addMember(id: string, userId: string): Promise<void> {
-    const { arrayUnion } = await import('firebase/firestore');
-    const ref = doc(this.db, `projects/${id}`);
-    await updateDoc(ref, { members: arrayUnion(userId), updatedAt: new Date() } as any);
+    const project = await firstValueFrom(this.http.get<Project>(`${API_BASE}/projects/${id}`));
+    const members = Array.from(new Set([...(project?.members ?? []), userId]));
+    await firstValueFrom(this.http.patch(`${API_BASE}/projects/${id}`, { members, updatedAt: new Date() } as any));
   }
 
   async removeMember(id: string, userId: string): Promise<void> {
-    const { arrayRemove } = await import('firebase/firestore');
-    const ref = doc(this.db, `projects/${id}`);
-    await updateDoc(ref, { members: arrayRemove(userId), updatedAt: new Date() } as any);
+    const project = await firstValueFrom(this.http.get<Project>(`${API_BASE}/projects/${id}`));
+    const members = (project?.members ?? []).filter((m: string) => m !== userId);
+    await firstValueFrom(this.http.patch(`${API_BASE}/projects/${id}`, { members, updatedAt: new Date() } as any));
   }
 }
