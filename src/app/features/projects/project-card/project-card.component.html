@@ -6,11 +6,11 @@
   <ng-template #empty>
     <p class="desc muted">Aucune description</p>
   </ng-template>
-  <div class="stats" *ngIf="project.stats as s">
-    <span>Tâches: {{ s.tasks || 0 }}</span>
-    <span>Terminées: {{ s.completed || 0 }}</span>
-    <span>Membres: {{ s.members || 0 }}</span>
-    <span>Statut: {{ s.status || 'inconnu' }}</span>
+  <div class="stats">
+    <span>Tâches: {{ (stats$ | async)?.total || 0 }}</span>
+    <span>Terminées: {{ (stats$ | async)?.completed || 0 }}</span>
+    <span>Membres: {{ ((liveProject$ | async)?.members?.length) || 0 }}</span>
+    <span>Statut: {{ statusLabel((liveProject$ | async)?.status) }}</span>
     <span *ngIf="project.role" class="role-badge">Rôle: {{ project.role }}</span>
   </div>
   <footer class="actions">

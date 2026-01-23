@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { AuthService } from '../../shared/services/auth.service';
 
 @Component({
@@ -12,5 +12,11 @@ import { AuthService } from '../../shared/services/auth.service';
 })
 export class MainLayoutComponent {
   private auth = inject(AuthService);
-  logout() { this.auth.logout(); }
+  private router = inject(Router);
+  currentUser$ = this.auth.currentUser$;
+  async logout() {
+    await this.auth.logout();
+    this.router.navigateByUrl('/auth/login', { replaceUrl: true });
+  }
+  goLogin() { this.router.navigateByUrl('/auth/login'); }
 }

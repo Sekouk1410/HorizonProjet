@@ -40,6 +40,7 @@ export class ProjectDetailsComponent {
   suggestions$!: Observable<User[]>;
   suggestionsVisible = false;
   stats$!: Observable<{ total: number; inprogress: number; completed: number }>;
+  today = '';
 
   // notifications toast
   private toastSeq = 0;
@@ -75,6 +76,7 @@ export class ProjectDetailsComponent {
   constructor(private route: ActivatedRoute, private projects: ProjectService, private milestones: MilestoneService, private users: UserService, private tasks: TaskService, auth: AuthService) {
     auth.currentUser$.subscribe(u => this.currentUserId = u?.id);
 
+    this.today = this.formatDateLocal(new Date());
     this.project$ = this.route.paramMap.pipe(
       switchMap(params => {
         this.projectId = params.get('id') || '';
@@ -159,11 +161,13 @@ export class ProjectDetailsComponent {
   async createMilestone() {
     if (!this.projectId || !this.msName || !this.msDate) return;
     try {
+      // Empêcher une date passée via normalisation côté logique
+      const safeDate = (this.msDate && this.msDate < this.today) ? this.today : this.msDate;
       await this.milestones.create({
         projectId: this.projectId,
         name: this.msName,
         description: this.msDescription,
-        date: new Date(this.msDate)
+        date: new Date(safeDate as string)
       });
       this.msName = '';
       this.msDescription = '';
@@ -246,5 +250,12 @@ export class ProjectDetailsComponent {
       default:
         return status || '—';
     }
+  }
+
+  private formatDateLocal(d: Date): string {
+    const year = d.getFullYear();
+    const month = (d.getMonth() + 1).toString().padStart(2, '0');
+    const day = d.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
   }
 }

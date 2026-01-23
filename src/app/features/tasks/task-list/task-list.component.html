@@ -1,7 +1,7 @@
 <section class="tasks">
   <div class="header">
     <h3>Tâches</h3>
-    <button *ngIf="!isFinished" type="button" class="btn-primary" (click)="openCreate()">Nouvelle tâche</button>
+    <button *ngIf="isManager && !isFinished" type="button" class="btn-primary" (click)="openCreate()">Nouvelle tâche</button>
   </div>
 
   <!-- Toasts -->
@@ -29,13 +29,13 @@
         >Terminer</button>
       </aside>
 
-      <div class="kanban">
+      <div class="kanban" [class.no-drag]="!isManager || isFinished">
       <div class="column">
         <h4>À faire</h4>
         <ul cdkDropList id="todo" [cdkDropListData]="board.todo" (cdkDropListDropped)="drop($event)"
             [cdkDropListConnectedTo]="['inprogress','done']">
-          <li *ngFor="let t of board.todo; trackBy: trackById" cdkDrag>
-            <app-task-item [task]="t" [canEdit]="!isFinished" (edit)="onEdit($event)" (remove)="onRemove($event)"></app-task-item>
+          <li *ngFor="let t of board.todo; trackBy: trackById" cdkDrag [cdkDragDisabled]="!isManager || isFinished">
+            <app-task-item [task]="t" [canEdit]="isManager && !isFinished" (edit)="onEdit($event)" (remove)="onRemove($event)"></app-task-item>
           </li>
         </ul>
       </div>
@@ -43,8 +43,8 @@
         <h4>En cours</h4>
         <ul cdkDropList id="inprogress" [cdkDropListData]="board.inprogress" (cdkDropListDropped)="drop($event)"
             [cdkDropListConnectedTo]="['todo','done']">
-          <li *ngFor="let t of board.inprogress; trackBy: trackById" cdkDrag>
-            <app-task-item [task]="t" [canEdit]="!isFinished" (edit)="onEdit($event)" (remove)="onRemove($event)"></app-task-item>
+          <li *ngFor="let t of board.inprogress; trackBy: trackById" cdkDrag [cdkDragDisabled]="!isManager || isFinished">
+            <app-task-item [task]="t" [canEdit]="isManager && !isFinished" (edit)="onEdit($event)" (remove)="onRemove($event)"></app-task-item>
           </li>
         </ul>
       </div>
@@ -52,8 +52,8 @@
         <h4>Terminé</h4>
         <ul cdkDropList id="done" [cdkDropListData]="board.done" (cdkDropListDropped)="drop($event)"
             [cdkDropListConnectedTo]="['todo','inprogress']">
-          <li *ngFor="let t of board.done; trackBy: trackById" cdkDrag>
-            <app-task-item [task]="t" [canEdit]="!isFinished" (edit)="onEdit($event)" (remove)="onRemove($event)"></app-task-item>
+          <li *ngFor="let t of board.done; trackBy: trackById" cdkDrag [cdkDragDisabled]="!isManager || isFinished">
+            <app-task-item [task]="t" [canEdit]="isManager && !isFinished" (edit)="onEdit($event)" (remove)="onRemove($event)"></app-task-item>
           </li>
         </ul>
       </div>

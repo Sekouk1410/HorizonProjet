@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BehaviorSubject, Observable, map, switchMap } from 'rxjs';
 import { TaskService } from '../../../shared/services/task.service';
-import { Task, StatusTask } from '../../../shared/models/task.model';
+import { Task, StatusTask, Priority } from '../../../shared/models/task.model';
 import { ProjectService } from '../../../shared/services/project.service';
 import { StatusProject } from '../../../shared/models/project.model';
 import { TaskItemComponent } from '../task-item/task-item.component';
@@ -41,12 +41,24 @@ export class TaskListComponent implements OnInit {
     this.board$ = this.refresh$.pipe(
       switchMap(() => this.tasks.listByProject$(this.projectId).pipe(
         map(list => {
-          const sorted = [...list].sort((a, b) => (a.order || 0) - (b.order || 0));
-          return {
-            todo: sorted.filter(t => t.status === StatusTask.TODO),
-            inprogress: sorted.filter(t => t.status === StatusTask.IN_PROGRESS),
-            done: sorted.filter(t => t.status === StatusTask.DONE),
-          };
+          const byOrder = [...list].sort((a, b) => (a.order || 0) - (b.order || 0));
+          const weight = (p?: Priority) => p === Priority.HIGH ? 2 : p === Priority.MEDIUM ? 1 : 0;
+          const todo = byOrder
+            .filter(t => t.status === StatusTask.TODO)
+            .sort((a, b) => {
+              const dw = weight(b.priority) - weight(a.priority);
+              if (dw !== 0) return dw; // priorité d'abord (HIGH > MEDIUM > LOW)
+              return (a.order || 0) - (b.order || 0); // puis l'ordre manuel
+            });
+          const inprogress = byOrder
+            .filter(t => t.status === StatusTask.IN_PROGRESS)
+            .sort((a, b) => {
+              const dw = weight(b.priority) - weight(a.priority);
+              if (dw !== 0) return dw;
+              return (a.order || 0) - (b.order || 0);
+            });
+          const done = byOrder.filter(t => t.status === StatusTask.DONE);
+          return { todo, inprogress, done };
         })
       ))
     );
