@@ -1,0 +1,74 @@
+.card {
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1rem;
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+  transition: box-shadow .2s ease, transform .2s ease;
+}
+
+.card:hover {
+  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1);
+  transform: translateY(-2px);
+}
+
+header h3 {
+  margin: 0 0 .25rem 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+.desc { margin: 0 0 .75rem 0; color: #374151; }
+.muted { color: #6b7280; }
+
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+  margin-bottom: .75rem;
+}
+
+.stats span {
+  font-size: .75rem;
+  color: #374151;
+  background: #f3f4f6;
+  padding: .25rem .5rem;
+  border-radius: .5rem;
+}
+
+.actions {
+  display: flex;
+  gap: .5rem;
+}
+
+.actions button {
+  border: 0;
+  border-radius: 8px;
+  padding: .45rem .7rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color .15s ease, box-shadow .15s ease, transform .05s ease;
+}
+
+.actions button:active { transform: translateY(1px); }
+
+/* Primary (Voir) */
+.actions button:first-child {
+  background: #6366f1;
+  color: #ffffff;
+}
+.actions button:first-child:hover { background: #4f46e5; }
+
+/* Secondary (Modifier) */
+.actions button:nth-child(2) {
+  background: #f3f4f6;
+  color: #111827;
+}
+.actions button:nth-child(2):hover {
+  background: #e5e7eb;
+}
+
+/* Danger (Supprimer) */
+.actions .danger { background: #ef4444; color: #ffffff; }
+.actions .danger:hover { background: #dc2626; }

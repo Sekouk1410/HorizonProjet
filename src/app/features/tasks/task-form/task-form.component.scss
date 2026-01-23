@@ -1,0 +1,28 @@
+.task-form { display:grid; gap:1rem; }
+.row { display:grid; gap:.375rem; }
+.row.two { grid-template-columns: 1fr 1fr; gap:1rem; }
+label { font-weight:600; font-size:.9rem; color:#374151; }
+input, textarea, select { width:100%; border:1px solid #e5e7eb; border-radius:.5rem; padding:.6rem .7rem; background:#fff; color:#111827; }
+input:focus, textarea:focus, select:focus { outline:none; border-color:#2563eb; box-shadow:0 0 0 3px rgba(37,99,235,.15); }
+input::placeholder, textarea::placeholder { color:#9ca3af; }
+textarea { min-height: 96px; resize: vertical; }
+select { appearance:auto; }
+.actions { display:flex; justify-content:flex-end; gap:.5rem; margin-top:.25rem; }
+.btn-secondary { background:#e5e7eb; color:#111827; border:none; padding:.5rem .75rem; border-radius:.375rem; cursor:pointer; }
+.btn-primary { background:#2563eb; color:#fff; border:none; padding:.5rem .75rem; border-radius:.375rem; cursor:pointer; }
+@media (max-width: 640px) { .row.two { grid-template-columns: 1fr; } }
+
+/* Enhanced members selector */
+.members-select { max-height: 220px; overflow: auto; border: 1px solid #e5e7eb; border-radius: .5rem; padding: .5rem; background: #fff; }
+.members-select .members-list { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; list-style: none; margin: 0; padding: 0; }
+.members-select .members-list li button {
+  width: 100%; display: flex; align-items: center; gap: .5rem;
+  background: #fff; border: 1px solid #e5e7eb; border-radius: .5rem; padding: .5rem .6rem; cursor: pointer; text-align: left;
+}
+.members-select .members-list li button:hover { background: #f9fafb; }
+.members-select .members-list li button.active { border-color: #2563eb; box-shadow: 0 0 0 2px rgba(37,99,235,.15); }
+.members-select .avatar {
+  width: 28px; height: 28px; border-radius: 9999px; background: #6366f1; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: .8rem;
+}
+.members-select .label { display: grid; line-height: 1.1; }
+.members-select .label .muted { font-size: .75rem; color: #6b7280; }

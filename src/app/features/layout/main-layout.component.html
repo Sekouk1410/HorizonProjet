@@ -1,0 +1,13 @@
+<header class="app-header">
+  <a routerLink="/" class="brand">Horizon Projet</a>
+  <nav class="spacer"></nav>
+  <ng-container *ngIf="(currentUser$ | async) as user; else loginBtn">
+    <button (click)="logout()">Déconnexion</button>
+  </ng-container>
+  <ng-template #loginBtn>
+    <button (click)="goLogin()">Connexion</button>
+  </ng-template>
+</header>
+<main class="app-main">
+  <router-outlet />
+</main>

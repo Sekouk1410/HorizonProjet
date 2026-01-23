@@ -1,0 +1,57 @@
+<form #f="ngForm" (ngSubmit)="submit()" class="task-form">
+  <div class="row">
+    <label>Titre</label>
+    <input type="text" [(ngModel)]="title" name="title" required #titleCtrl="ngModel" [class.is-invalid]="titleCtrl.invalid && (titleCtrl.touched || f.submitted)" placeholder="Ex: Intégrer l'API paiement" />
+    <small class="field-error" *ngIf="titleCtrl.invalid && (titleCtrl.touched || f.submitted)">Le titre est requis.</small>
+  </div>
+  <div class="row">
+    <label>Description</label>
+    <textarea [(ngModel)]="description" name="description" placeholder="Détails de la tâche, critères d'acceptation..."></textarea>
+  </div>
+  <div class="row two">
+    <div>
+      <label>Début</label>
+      <input type="date" [(ngModel)]="startDate" name="startDate" [min]="today" />
+    </div>
+    <div>
+      <label>Fin</label>
+      <input type="date" [(ngModel)]="endDate" name="endDate" [min]="startDate || today" />
+    </div>
+  </div>
+  <div class="row two">
+    <div>
+      <label>Priorité</label>
+      <select [(ngModel)]="priority" name="priority">
+        <option [ngValue]="Priority.LOW">Basse</option>
+        <option [ngValue]="Priority.MEDIUM">Moyenne</option>
+        <option [ngValue]="Priority.HIGH">Haute</option>
+      </select>
+      <small class="muted">Choisissez l'urgence relative.</small>
+    </div>
+  </div>
+  <div class="row">
+    <label>Assigner à</label>
+    <ng-container *ngIf="hasAssignableMembers; else noMembers">
+      <div class="members-select" *ngIf="members$ | async as members">
+        <ul class="members-list">
+          <li *ngFor="let m of members">
+            <button type="button" (click)="selectedAssigneeId = '' + (m?.id ?? '')" [class.active]="selectedAssigneeId === ('' + (m?.id ?? ''))">
+              <span class="avatar" [style.background]="colorFor(m.email || m.userName || '')">{{ (m.userName || m.email) | slice:0:2 | uppercase }}</span>
+              <span class="label">
+                {{ m.userName || m.email }}
+                <small class="muted">{{ m.email }}</small>
+              </span>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </ng-container>
+    <ng-template #noMembers>
+      <p class="muted">Ajoutez d'abord des membres au projet pour pouvoir assigner la tâche.</p>
+    </ng-template>
+  </div>
+  <div class="actions">
+    <button type="button" class="btn-secondary" (click)="close.emit()">Annuler</button>
+    <button type="submit" class="btn-primary" [disabled]="!hasAssignableMembers || !selectedAssigneeId || f.invalid">Enregistrer</button>
+  </div>
+</form>

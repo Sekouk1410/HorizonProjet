@@ -1,0 +1,26 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+  <div>
+    <label for="name">Nom du projet</label>
+    <input id="name" type="text" formControlName="name" [class.invalid]="form.get('name')?.touched && form.get('name')?.invalid" />
+    <small *ngIf="form.get('name')?.touched && form.get('name')?.invalid">
+      Le nom est requis (min. 3 caractères).
+    </small>
+  </div>
+
+  <div>
+    <label for="description">Description</label>
+    <textarea id="description" rows="4" formControlName="description" placeholder="Décrivez brièvement votre projet..." [class.invalid]="false"></textarea>
+  </div>
+
+  <div *ngIf="showEndDate">
+    <label for="endDate">Date de fin</label>
+    <input id="endDate" type="date" formControlName="endDate" [min]="todayStr" [class.invalid]="form.get('endDate')?.touched && form.get('endDate')?.invalid" />
+    <ng-container *ngIf="form.get('endDate') as c">
+      <small *ngIf="c.touched && c.hasError('required')">La date de fin est requise.</small>
+      <small *ngIf="c.touched && c.hasError('minDate')">La date de fin ne peut pas être antérieure à aujourd'hui.</small>
+      <small *ngIf="!c.invalid && isEndDateTooSoon">Astuce: la date de fin est très proche (moins de 24h).</small>
+    </ng-container>
+  </div>
+
+  <button type="submit" [disabled]="form.invalid">{{ submitLabel }}</button>
+</form>

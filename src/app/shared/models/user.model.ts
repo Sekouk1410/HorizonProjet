@@ -16,7 +16,7 @@ export interface User {
     userName: string;
     email: string;
     password?: string; // Optionnel car géré par Firebase Auth
-    role: Role;
+    role?: Role;
     createdAt?: Date;
     updatedAt?: Date;
 }
@@ -28,7 +28,7 @@ export interface CreateUserDto {
     userName: string;
     email: string;
     password: string;
-    role: Role;
+    role?: Role;
 }
 
 /**

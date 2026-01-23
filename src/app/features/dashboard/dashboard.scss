@@ -1,0 +1,134 @@
+.dashboard {
+  display: grid;
+  gap: 1rem;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+.controls {
+  display: flex;
+  gap: .75rem;
+  align-items: center;
+}
+
+.control-input,
+.control-select {
+  padding: .6rem .8rem;
+  border: 1px solid #d1d5db;
+  border-radius: .5rem;
+  outline: none;
+}
+
+.control-input:focus,
+.control-select:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+.count-badge {
+  margin-left: auto;
+  font-size: .875rem;
+  color: #374151;
+  background: #f3f4f6;
+  padding: .4rem .6rem;
+  border-radius: .5rem;
+}
+
+.grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+
+.empty {
+  padding: 1rem;
+  border: 1px dashed #d1d5db;
+  color: #6b7280;
+  border-radius: .75rem;
+}
+
+.loading {
+  color: #6b7280;
+}
+
+.toolbar { display: flex; justify-content: flex-end; }
+.btn-primary {
+  background: #111827;
+  color: #ffffff;
+  border: 0;
+  border-radius: .6rem;
+  padding: .6rem .9rem;
+  cursor: pointer;
+  font-weight: 600;
+}
+.btn-primary:hover { background: #1f2937; }
+
+/* Modal */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 40;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  z-index: 50;
+}
+
+.modal-content {
+  width: min(680px, calc(100% - 2rem));
+  background: #ffffff;
+  border-radius: .75rem;
+  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+  overflow: hidden;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: .9rem 1rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.modal-body { padding: 1rem; }
+
+.icon-close {
+  border: 0;
+  background: transparent;
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+  color: #6b7280;
+}
+.icon-close:hover { color: #111827; }
+
+/* Toasts */
+.toast-container {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  display: grid;
+  gap: .5rem;
+  z-index: 60;
+}
+
+.toast {
+  padding: .6rem .9rem;
+  border-radius: .5rem;
+  color: #fff;
+  background: #111827;
+  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1);
+}
+
+.toast.success { background: #065f46; }
+.toast.error { background: #991b1b; }
+
