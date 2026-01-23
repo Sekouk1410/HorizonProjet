@@ -1,59 +1,51 @@
 # HorizonProjet
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.6.
+Application Angular 21 de gestion de projets avec tâches (Kanban), jalons et vue Gantt.
 
-## Development server
+## Prérequis
+- Node.js 18+ et npm
+- Angular CLI 21 global (optionnel): `npm i -g @angular/cli`
 
-To start a local development server, run:
+## Installation
 
-```bash
-ng serve
-```
+npm install
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
 
-## Code scaffolding
+## Configuration
+- Firebase Auth: les identifiants sont attendus dans `src/app/shared/firebase-config.ts` (déjà référencé par le code). Renseignez vos clés si nécessaire.
+- Environnements: vérifiez `src/environments/environment*.ts` (URLs d’API, flags prod).
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Lancer en local
+npm run api pour lancer le serveur json-server
+ng serve pour lancer le serveur angular
 
-```bash
-ng generate component component-name
-```
+Ouvrez http://localhost:4200
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Fonctionnalités principales
 
-```bash
-ng generate --help
-```
+### Authentification
+- Connexion / Inscription via Firebase Auth.
 
-## Building
+### Projets
+- Détails d’un projet: description, dates, statut, membres, statistiques.
+- Gestion des membres: ajout/retrait; le manager est le créateur du projet.
 
-To build the project run:
+### Tâches (Kanban)
+- Colonnes: À faire, En progression, Terminées (drag & drop entre colonnes).
+- Priorité: Basse, Moyenne, Haute.
+- Tri dans “À faire” et “En progression”: priorité (Haute → Basse).
+- Création/édition:
+  - Assignation obligatoire à un membre du projet; si aucun membre, le bouton “Enregistrer” est désactivé.
+  - La liste des assignés ne montre que les membres du projet.
 
-```bash
-ng build
-```
+### Jalons
+- Liste des jalons avec statut (terminé/à faire).
+- Ajout d’un jalon avec date non passée.
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+### Vue Gantt
+- Basée sur `vis-timeline`.
+- Affiche: tâches (barres) et jalons (points) avec légende et marqueur.
+- Zoom/pan: boutons Jour/Semaine/Mois.
+- Export PDF.
 
-## Running unit tests
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.

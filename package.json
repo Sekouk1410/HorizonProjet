@@ -42,7 +42,8 @@
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "vis-data": "^8.0.3",
-    "vis-timeline": "^8.5.0"
+    "vis-timeline": "^8.5.0",
+    "zone.js": "^0.16.0"
   },
   "devDependencies": {
     "@angular/build": "^21.0.6",

@@ -1,7 +1,15 @@
 <section *ngIf="project$ | async as project; else loading" class="project-details">
   <header class="header">
+    <a routerLink="/dashboard" class="btn-back" title="Retour au tableau de bord" aria-label="Retour au tableau de bord">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <polyline points="15 18 9 12 15 6"></polyline>
+      </svg>
+      <span>Retour</span>
+    </a>
     <h2>{{ project.name }}</h2>
-    <a [routerLink]="['/projects', project.id, 'gantt']" class="btn-primary" title="Voir le Gantt">Gantt</a>
+    <div class="actions">
+      <a [routerLink]="['/projects', project.id, 'gantt']" class="btn-primary" title="Voir le Gantt">Gantt</a>
+    </div>
   </header>
 
   <div class="info">

@@ -10,17 +10,17 @@
       "status": "in-progress",
       "members": [
         "pSCxta59IlRR9hf6ts9bKsyX3mZ2",
-        "9cWYsYXRCYP1L3SNl82pJpR5td53",
-        "b4ekVtKPsogA3PKFwKbnB5lRpMA3"
+        "b4ekVtKPsogA3PKFwKbnB5lRpMA3",
+        "9cWYsYXRCYP1L3SNl82pJpR5td53"
       ],
       "finishedAt": null,
       "createdBy": "pSCxta59IlRR9hf6ts9bKsyX3mZ2",
       "createdAt": "2026-01-22T03:55:09.000Z",
-      "updatedAt": "2026-01-23T05:45:50.899Z"
+      "updatedAt": "2026-01-23T07:42:18.581Z"
     },
     {
       "name": "flutter",
-      "description": "OK C4EST BONCx",
+      "description": "Developpement d'une app mobile",
       "startDate": "2026-01-22T23:01:55.924Z",
       "endDate": "2026-01-31T00:00:00.000Z",
       "timeSpent": 0,
@@ -31,7 +31,7 @@
       "finishedAt": "2026-01-23T06:59:41.129Z",
       "createdBy": "pSCxta59IlRR9hf6ts9bKsyX3mZ2",
       "createdAt": "2026-01-22T23:01:55.924Z",
-      "updatedAt": "2026-01-23T06:59:41.129Z",
+      "updatedAt": "2026-01-23T13:26:36.174Z",
       "id": "MX6CHaf"
     }
   ],
@@ -45,12 +45,12 @@
       "endDate": "2026-01-31T00:00:00.000Z",
       "finishedAt": null,
       "timeSpent": 0,
-      "status": "todo",
+      "status": "in-progress",
       "priority": "medium",
       "dependencies": [],
       "assignedTo": "9cWYsYXRCYP1L3SNl82pJpR5td53",
-      "order": 1769148847667,
-      "updatedAt": "2026-01-23T06:14:08.364Z",
+      "order": 1769154224405,
+      "updatedAt": "2026-01-23T07:43:44.967Z",
       "id": 4
     },
     {
@@ -66,8 +66,8 @@
       "priority": "low",
       "dependencies": [],
       "assignedTo": "9cWYsYXRCYP1L3SNl82pJpR5td53",
-      "order": 1769148847666,
-      "updatedAt": "2026-01-23T06:14:07.687Z",
+      "order": 1769154222015,
+      "updatedAt": "2026-01-23T07:43:42.612Z",
       "id": 5
     },
     {
@@ -83,8 +83,8 @@
       "priority": "medium",
       "dependencies": [],
       "assignedTo": "b4ekVtKPsogA3PKFwKbnB5lRpMA3",
-      "order": 1769148847668,
-      "updatedAt": "2026-01-23T06:14:08.372Z",
+      "order": 1769154225512,
+      "updatedAt": "2026-01-23T07:43:45.512Z",
       "id": 6
     },
     {
@@ -96,12 +96,12 @@
       "endDate": "2026-01-24T00:00:00.000Z",
       "finishedAt": null,
       "timeSpent": 0,
-      "status": "todo",
+      "status": "in-progress",
       "priority": "high",
       "dependencies": [],
       "assignedTo": "b4ekVtKPsogA3PKFwKbnB5lRpMA3",
-      "order": 1769148847665,
-      "updatedAt": "2026-01-23T06:14:07.665Z",
+      "order": 1769154224404,
+      "updatedAt": "2026-01-23T07:43:44.405Z",
       "id": 7
     },
     {
@@ -118,7 +118,7 @@
       "dependencies": [],
       "assignedTo": "9cWYsYXRCYP1L3SNl82pJpR5td53",
       "order": 1769151575867,
-      "updatedAt": "2026-01-23T06:59:35.867Z",
+      "updatedAt": "2026-01-23T08:37:44.923Z",
       "id": 8
     }
   ],
@@ -162,7 +162,7 @@
       "userName": "test",
       "name": "test",
       "createdAt": "2026-01-23T00:36:36.262Z",
-      "updatedAt": "2026-01-23T07:36:32.195Z"
+      "updatedAt": "2026-01-23T13:25:54.426Z"
     },
     {
       "id": "9cWYsYXRCYP1L3SNl82pJpR5td53",
