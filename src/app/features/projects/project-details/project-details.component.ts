@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, Observable, of, switchMap, debounceTime, distinctUntilChanged, combineLatest, map } from 'rxjs';
 import { Project } from '../../../shared/models/project.model';
@@ -17,7 +18,7 @@ import { TaskListComponent } from '../../tasks/task-list/task-list.component';
 @Component({
   selector: 'app-project-details',
   standalone: true,
-  imports: [CommonModule, FormsModule, TaskListComponent],
+  imports: [CommonModule, FormsModule, TaskListComponent, RouterLink],
   templateUrl: './project-details.component.html',
   styleUrls: ['./project-details.component.scss']
 })

@@ -27,6 +27,7 @@ export const routes: Routes = [
       { path: 'dashboard', component: Dashboard },
       { path: 'projects/new', component: ProjectFormComponent },
       { path: 'projects/:id', loadComponent: () => import('./features/projects/project-details/project-details.component').then(m => m.ProjectDetailsComponent) },
+      { path: 'projects/:id/gantt', loadComponent: () => import('./features/projects/gantt/gantt-view.component').then(m => m.GanttViewComponent) },
       { path: 'projects/:id/edit', loadComponent: () => import('./features/projects/project-edit/project-edit.component').then(m => m.ProjectEditComponent) },
     ],
   },

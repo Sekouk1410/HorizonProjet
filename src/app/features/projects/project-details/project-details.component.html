@@ -1,6 +1,7 @@
 <section *ngIf="project$ | async as project; else loading" class="project-details">
   <header class="header">
     <h2>{{ project.name }}</h2>
+    <a [routerLink]="['/projects', project.id, 'gantt']" class="btn-primary" title="Voir le Gantt">Gantt</a>
   </header>
 
   <div class="info">

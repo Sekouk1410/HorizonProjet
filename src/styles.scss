@@ -24,6 +24,9 @@ $my-theme: mat.m2-define-light-theme((
 // Include theme styles for core and each component
 @include mat.all-component-themes($my-theme);
 
+// vis-timeline base styles (must come after @use rules)
+@import 'vis-timeline/styles/vis-timeline-graph2d.min.css';
+
 // Global styles
 * {
   margin: 0;
