@@ -1,0 +1,60 @@
+<form (ngSubmit)="submit()" class="task-form">
+  <div class="row">
+    <label>Titre</label>
+    <input type="text" [(ngModel)]="title" name="title" required />
+  </div>
+  <div class="row">
+    <label>Description</label>
+    <textarea [(ngModel)]="description" name="description"></textarea>
+  </div>
+  <div class="row two">
+    <div>
+      <label>Début</label>
+      <input type="date" [(ngModel)]="startDate" name="startDate" />
+    </div>
+    <div>
+      <label>Fin</label>
+      <input type="date" [(ngModel)]="endDate" name="endDate" />
+    </div>
+  </div>
+  <div class="row two">
+    <div>
+      <label>Priorité</label>
+      <select [(ngModel)]="priority" name="priority">
+        <option [ngValue]="Priority.LOW">Basse</option>
+        <option [ngValue]="Priority.MEDIUM">Moyenne</option>
+        <option [ngValue]="Priority.HIGH">Haute</option>
+      </select>
+    </div>
+    <div>
+      <label>Statut</label>
+      <select [(ngModel)]="status" name="status">
+        <option [ngValue]="StatusTask.TODO">À faire</option>
+        <option [ngValue]="StatusTask.IN_PROGRESS">En cours</option>
+        <option [ngValue]="StatusTask.DONE">Terminé</option>
+        <option [ngValue]="StatusTask.IN_LATE">En retard</option>
+      </select>
+    </div>
+  </div>
+  <div class="row">
+    <label>Assigner à</label>
+    <ul class="members-list" *ngIf="members$ | async as members">
+      <li *ngFor="let m of members">
+        <button type="button" (click)="selectedAssigneeId = '' + (m?.id ?? '')" [class.active]="selectedAssigneeId === ('' + (m?.id ?? ''))">
+          {{ m.userName || m.email }} <small class="muted">{{ m.email }}</small>
+        </button>
+      </li>
+    </ul>
+    <p class="muted" *ngIf="(members$ | async)?.length === 0">Aucun membre disponible.</p>
+  </div>
+  <div class="row">
+    <label>Dépendances</label>
+    <select multiple [(ngModel)]="dependencies" name="dependencies" size="5">
+      <option *ngFor="let t of (allTasks$ | async)" [value]="'' + (t?.id ?? '')" [disabled]="t.id === taskId">{{ t.title }}</option>
+    </select>
+  </div>
+  <div class="actions">
+    <button type="button" class="btn-secondary" (click)="close.emit()">Annuler</button>
+    <button type="submit" class="btn-primary">Enregistrer</button>
+  </div>
+</form>

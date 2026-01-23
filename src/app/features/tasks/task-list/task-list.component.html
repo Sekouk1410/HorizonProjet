@@ -1,0 +1,130 @@
+<section class="tasks">
+  <div class="header">
+    <h3>Tâches</h3>
+    <button *ngIf="!isFinished" type="button" class="btn-primary" (click)="openCreate()">Nouvelle tâche</button>
+  </div>
+
+  <!-- Toasts -->
+  <div class="toast-container" aria-live="polite" aria-atomic="true">
+    <div class="toast" *ngFor="let t of toasts" [class.success]="t.type==='success'" [class.error]="t.type==='error'">
+      {{ t.message }}
+    </div>
+  </div>
+
+  <ng-container *ngIf="(board$ | async) as board; else loading">
+    <div class="layout">
+      <aside class="progress-card">
+        <h4>État du projet</h4>
+        <div class="muted">Progression</div>
+        <div class="percent">{{ (progress$ | async) || 0 }}%</div>
+        <div class="bar">
+          <div class="fill" [style.width]="((progress$ | async) || 0) + '%'" ></div>
+        </div>
+        <button
+          type="button"
+          class="btn-finish"
+          [class.ready]="canFinish$((progress$ | async))"
+          [disabled]="!canFinish$((progress$ | async))"
+          (click)="openFinishConfirm()"
+        >Terminer</button>
+      </aside>
+
+      <div class="kanban">
+      <div class="column">
+        <h4>À faire</h4>
+        <ul cdkDropList id="todo" [cdkDropListData]="board.todo" (cdkDropListDropped)="drop($event)"
+            [cdkDropListConnectedTo]="['inprogress','done']">
+          <li *ngFor="let t of board.todo; trackBy: trackById" cdkDrag>
+            <app-task-item [task]="t" [canEdit]="!isFinished" (edit)="onEdit($event)" (remove)="onRemove($event)"></app-task-item>
+          </li>
+        </ul>
+      </div>
+      <div class="column">
+        <h4>En cours</h4>
+        <ul cdkDropList id="inprogress" [cdkDropListData]="board.inprogress" (cdkDropListDropped)="drop($event)"
+            [cdkDropListConnectedTo]="['todo','done']">
+          <li *ngFor="let t of board.inprogress; trackBy: trackById" cdkDrag>
+            <app-task-item [task]="t" [canEdit]="!isFinished" (edit)="onEdit($event)" (remove)="onRemove($event)"></app-task-item>
+          </li>
+        </ul>
+      </div>
+      <div class="column">
+        <h4>Terminé</h4>
+        <ul cdkDropList id="done" [cdkDropListData]="board.done" (cdkDropListDropped)="drop($event)"
+            [cdkDropListConnectedTo]="['todo','inprogress']">
+          <li *ngFor="let t of board.done; trackBy: trackById" cdkDrag>
+            <app-task-item [task]="t" [canEdit]="!isFinished" (edit)="onEdit($event)" (remove)="onRemove($event)"></app-task-item>
+          </li>
+        </ul>
+      </div>
+      </div>
+    </div>
+  </ng-container>
+  <ng-template #loading>
+    <div class="loading">Chargement des tâches…</div>
+  </ng-template>
+
+  <!-- Modal création -->
+  <div class="modal-backdrop" *ngIf="showCreate" (click)="closeCreate()"></div>
+  <div class="modal" *ngIf="showCreate" role="dialog" aria-modal="true">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Créer une tâche</h3>
+        <button type="button" class="icon-close" aria-label="Fermer" (click)="closeCreate()">×</button>
+      </div>
+      <div class="modal-body">
+        <app-task-form [projectId]="projectId" (close)="closeCreate()" (saved)="onSaved($event)"></app-task-form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal édition -->
+  <div class="modal-backdrop" *ngIf="showEdit" (click)="closeEdit()"></div>
+  <div class="modal" *ngIf="showEdit" role="dialog" aria-modal="true">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Éditer la tâche</h3>
+        <button type="button" class="icon-close" aria-label="Fermer" (click)="closeEdit()">×</button>
+      </div>
+      <div class="modal-body">
+        <app-task-form [projectId]="projectId" [taskId]="editingTaskId" (close)="closeEdit()" (saved)="onEdited($event)"></app-task-form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirm delete modal -->
+  <div class="modal-backdrop" *ngIf="showConfirmDelete" (click)="cancelDelete()"></div>
+  <div class="modal" *ngIf="showConfirmDelete" role="dialog" aria-modal="true">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Supprimer la tâche</h3>
+        <button type="button" class="icon-close" aria-label="Fermer" (click)="cancelDelete()">×</button>
+      </div>
+      <div class="modal-body">
+        <p>Confirmer la suppression de cette tâche ? Cette action est définitive.</p>
+        <div class="modal-actions">
+          <button type="button" class="btn-secondary" (click)="cancelDelete()">Annuler</button>
+          <button type="button" class="btn-danger" (click)="confirmDelete()">Supprimer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirm finish project modal -->
+  <div class="modal-backdrop" *ngIf="showFinishConfirm" (click)="cancelFinishConfirm()"></div>
+  <div class="modal" *ngIf="showFinishConfirm" role="dialog" aria-modal="true">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Terminer le projet</h3>
+        <button type="button" class="icon-close" aria-label="Fermer" (click)="cancelFinishConfirm()">×</button>
+      </div>
+      <div class="modal-body">
+        <p>Confirmer la finalisation du projet ? Cette action est définitive.</p>
+        <div class="modal-actions">
+          <button type="button" class="btn-secondary" (click)="cancelFinishConfirm()">Annuler</button>
+          <button type="button" class="btn-danger" (click)="confirmFinish()">Terminer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

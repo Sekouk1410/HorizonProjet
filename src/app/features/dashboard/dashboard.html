@@ -66,7 +66,7 @@
         <app-project-edit
           [projectId]="editingProjectId"
           (close)="closeEditModal()"
-          (saved)="saved => saved === 'success' ? showToast('Projet mis à jour avec succès','success') : showToast('Échec de la mise à jour du projet','error')"
+          (saved)="onEditSaved($event)"
         ></app-project-edit>
       </div>
     </div>

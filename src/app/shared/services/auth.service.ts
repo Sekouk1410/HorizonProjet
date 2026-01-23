@@ -1,13 +1,15 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { initializeApp, getApps } from 'firebase/app';
 import { getAuth, onAuthStateChanged, User as FirebaseUser, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile } from 'firebase/auth';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Role, User } from '../models/user.model';
 import { firebaseConfig } from '../firebase-config';
+import { UserService } from './user.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private auth = getAuth(this.ensureFirebaseApp());
+  private users = inject(UserService);
 
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   currentUser$ = this.currentUserSubject.asObservable();
@@ -20,6 +22,8 @@ export class AuthService {
       }
       const user = this.mapFirebaseUser(fbUser);
       this.currentUserSubject.next(user);
+      // sync user profile into json-server users collection
+      this.users.upsert(user).catch(() => {});
     });
   }
 
@@ -28,6 +32,7 @@ export class AuthService {
     await updateProfile(cred.user, { displayName: userName });
     const user = this.mapFirebaseUser(cred.user);
     this.currentUserSubject.next(user);
+    await this.users.upsert(user);
     return user;
   }
 
@@ -35,6 +40,7 @@ export class AuthService {
     const cred = await signInWithEmailAndPassword(this.auth, email, password);
     const user = this.mapFirebaseUser(cred.user);
     this.currentUserSubject.next(user);
+    await this.users.upsert(user);
     return user;
   }
 

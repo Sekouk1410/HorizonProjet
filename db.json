@@ -14,7 +14,7 @@
       "finishedAt": null,
       "createdBy": "pSCxta59IlRR9hf6ts9bKsyX3mZ2",
       "createdAt": "2026-01-22T03:55:09.000Z",
-      "updatedAt": "2026-01-22T22:52:27.255Z"
+      "updatedAt": "2026-01-23T03:01:32.513Z"
     },
     {
       "name": "flutter",
@@ -31,26 +31,56 @@
       "createdAt": "2026-01-22T23:01:55.924Z",
       "updatedAt": "2026-01-22T23:25:41.271Z",
       "id": "MX6CHaf"
-    },
-    {
-      "name": "HHJKd",
-      "description": "DWWDSD",
-      "startDate": "2026-01-22T23:15:59.074Z",
-      "endDate": "2026-01-31T00:00:00.000Z",
-      "timeSpent": 0,
-      "status": "in-progress",
-      "members": [
-        "pSCxta59IlRR9hf6ts9bKsyX3mZ2"
-      ],
-      "finishedAt": null,
-      "createdBy": "pSCxta59IlRR9hf6ts9bKsyX3mZ2",
-      "createdAt": "2026-01-22T23:15:59.074Z",
-      "updatedAt": "2026-01-22T23:25:24.707Z",
-      "id": "BQPHws6"
     }
   ],
-  "tasks": [],
-  "milestones": [],
+  "tasks": [
+    {
+      "projectId": "72bF3AaHQK0qUArJs4Wp",
+      "title": "xccx",
+      "description": "",
+      "createdAt": "2026-01-23T03:44:30.052Z",
+      "startDate": "2026-01-23T00:00:00.000Z",
+      "endDate": "2026-01-31T00:00:00.000Z",
+      "finishedAt": null,
+      "timeSpent": 0,
+      "status": "todo",
+      "priority": "medium",
+      "dependencies": [],
+      "assignedTo": "9cWYsYXRCYP1L3SNl82pJpR5td53",
+      "order": 1769142347452,
+      "updatedAt": "2026-01-23T04:25:47.452Z",
+      "id": 4
+    }
+  ],
+  "milestones": [
+    {
+      "projectId": "72bF3AaHQK0qUArJs4Wp",
+      "name": "qqdsq",
+      "description": "",
+      "date": "2026-01-23T00:00:00.000Z",
+      "isCompleted": false,
+      "createdAt": "2026-01-23T04:00:29.899Z",
+      "updatedAt": "2026-01-23T04:00:29.899Z",
+      "id": 1
+    }
+  ],
   "timeEntries": [],
-  "users": []
+  "users": [
+    {
+      "id": "pSCxta59IlRR9hf6ts9bKsyX3mZ2",
+      "email": "test@gmail.com",
+      "userName": "test",
+      "name": "test",
+      "createdAt": "2026-01-23T00:36:36.262Z",
+      "updatedAt": "2026-01-23T04:25:27.319Z"
+    },
+    {
+      "id": "9cWYsYXRCYP1L3SNl82pJpR5td53",
+      "email": "testeur@gmail.com",
+      "userName": "Testeur",
+      "name": "Testeur",
+      "createdAt": "2026-01-23T00:38:30.126Z",
+      "updatedAt": "2026-01-23T00:41:04.193Z"
+    }
+  ]
 }

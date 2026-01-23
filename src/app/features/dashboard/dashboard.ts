@@ -93,7 +93,7 @@ export class Dashboard {
   }
 
   onView(p: ProjectModel) {
-    if (p.id) this.router.navigate(['projects', String(p.id)]);
+    if (p.id) this.router.navigate(['/projects', String(p.id)]);
   }
 
   onEdit(p: ProjectModel) {
