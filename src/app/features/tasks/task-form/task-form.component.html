@@ -31,8 +31,8 @@
   </div>
   <div class="row">
     <label>Assigner à</label>
-    <ng-container *ngIf="hasAssignableMembers; else noMembers">
-      <div class="members-select" *ngIf="members$ | async as members">
+    <ng-container *ngIf="members$ | async as members">
+      <div class="members-select" *ngIf="members.length > 0; else noMembers">
         <ul class="members-list">
           <li *ngFor="let m of members">
             <button type="button" (click)="selectedAssigneeId = '' + (m?.id ?? '')" [class.active]="selectedAssigneeId === ('' + (m?.id ?? ''))">
@@ -45,13 +45,13 @@
           </li>
         </ul>
       </div>
+      <ng-template #noMembers>
+        <p class="muted">Ajoutez d'abord des membres au projet pour pouvoir assigner la tâche.</p>
+      </ng-template>
     </ng-container>
-    <ng-template #noMembers>
-      <p class="muted">Ajoutez d'abord des membres au projet pour pouvoir assigner la tâche.</p>
-    </ng-template>
   </div>
   <div class="actions">
     <button type="button" class="btn-secondary" (click)="close.emit()">Annuler</button>
-    <button type="submit" class="btn-primary" [disabled]="!hasAssignableMembers || !selectedAssigneeId || f.invalid">Enregistrer</button>
+    <button type="submit" class="btn-primary" [disabled]="!(members$ | async)?.length || !selectedAssigneeId || f.invalid">Enregistrer</button>
   </div>
 </form>
