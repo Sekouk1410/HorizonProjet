@@ -28,11 +28,46 @@
       "members": [
         "pSCxta59IlRR9hf6ts9bKsyX3mZ2"
       ],
-      "finishedAt": "2026-01-23T06:59:41.129Z",
+      "finishedAt": "2026-01-30T16:54:35.437Z",
       "createdBy": "pSCxta59IlRR9hf6ts9bKsyX3mZ2",
       "createdAt": "2026-01-22T23:01:55.924Z",
-      "updatedAt": "2026-01-23T13:26:36.174Z",
+      "updatedAt": "2026-01-30T16:54:35.437Z",
       "id": "MX6CHaf"
+    },
+    {
+      "name": "Sekouprojet",
+      "description": "dev",
+      "startDate": "2026-01-30T17:15:37.803Z",
+      "endDate": "2026-02-04T00:00:00.000Z",
+      "timeSpent": 0,
+      "status": "in-progress",
+      "members": [
+        "hEvVsS4PQUYZyudYIW8jiBGvKad2",
+        "pSCxta59IlRR9hf6ts9bKsyX3mZ2"
+      ],
+      "finishedAt": null,
+      "createdBy": "hEvVsS4PQUYZyudYIW8jiBGvKad2",
+      "createdAt": "2026-01-30T17:15:37.803Z",
+      "updatedAt": "2026-01-30T17:17:14.258Z",
+      "id": "aTvzggW"
+    },
+    {
+      "name": "flutter",
+      "description": "dev flutter",
+      "startDate": "2026-01-30T18:00:06.800Z",
+      "endDate": "2026-02-03T00:00:00.000Z",
+      "timeSpent": 0,
+      "status": "in-progress",
+      "members": [
+        "Wt2V7ZZWjORjQDzFMvJHasbY2bw1",
+        "b4ekVtKPsogA3PKFwKbnB5lRpMA3",
+        "pSCxta59IlRR9hf6ts9bKsyX3mZ2"
+      ],
+      "finishedAt": null,
+      "createdBy": "Wt2V7ZZWjORjQDzFMvJHasbY2bw1",
+      "createdAt": "2026-01-30T18:00:06.800Z",
+      "updatedAt": "2026-01-30T18:01:11.974Z",
+      "id": "cp76eyC"
     }
   ],
   "tasks": [
@@ -45,12 +80,12 @@
       "endDate": "2026-01-31T00:00:00.000Z",
       "finishedAt": null,
       "timeSpent": 0,
-      "status": "in-progress",
+      "status": "todo",
       "priority": "medium",
       "dependencies": [],
       "assignedTo": "9cWYsYXRCYP1L3SNl82pJpR5td53",
-      "order": 1769154224405,
-      "updatedAt": "2026-01-23T07:43:44.967Z",
+      "order": 1769792634825,
+      "updatedAt": "2026-01-30T17:05:10.710Z",
       "id": 4
     },
     {
@@ -62,12 +97,12 @@
       "endDate": "2026-01-31T00:00:00.000Z",
       "finishedAt": null,
       "timeSpent": 0,
-      "status": "todo",
+      "status": "in-progress",
       "priority": "low",
       "dependencies": [],
       "assignedTo": "9cWYsYXRCYP1L3SNl82pJpR5td53",
-      "order": 1769154222015,
-      "updatedAt": "2026-01-23T07:43:42.612Z",
+      "order": 1769792635680,
+      "updatedAt": "2026-01-30T17:05:10.992Z",
       "id": 5
     },
     {
@@ -79,12 +114,12 @@
       "endDate": "2026-01-30T00:00:00.000Z",
       "finishedAt": null,
       "timeSpent": 0,
-      "status": "todo",
+      "status": "in-progress",
       "priority": "medium",
       "dependencies": [],
       "assignedTo": "b4ekVtKPsogA3PKFwKbnB5lRpMA3",
-      "order": 1769154225512,
-      "updatedAt": "2026-01-23T07:43:45.512Z",
+      "order": 1769792635679,
+      "updatedAt": "2026-01-30T17:05:10.949Z",
       "id": 6
     },
     {
@@ -100,8 +135,8 @@
       "priority": "high",
       "dependencies": [],
       "assignedTo": "b4ekVtKPsogA3PKFwKbnB5lRpMA3",
-      "order": 1769154224404,
-      "updatedAt": "2026-01-23T07:43:44.405Z",
+      "order": 1769792635681,
+      "updatedAt": "2026-01-30T17:05:11.056Z",
       "id": 7
     },
     {
@@ -120,6 +155,74 @@
       "order": 1769151575867,
       "updatedAt": "2026-01-23T08:37:44.923Z",
       "id": 8
+    },
+    {
+      "projectId": "72bF3AaHQK0qUArJs4Wp",
+      "title": "backend",
+      "description": "dev du back",
+      "createdAt": "2026-01-30T17:02:35.054Z",
+      "startDate": "2026-01-30T00:00:00.000Z",
+      "endDate": "2026-02-08T00:00:00.000Z",
+      "finishedAt": null,
+      "timeSpent": 0,
+      "status": "in-progress",
+      "priority": "high",
+      "dependencies": [],
+      "assignedTo": "b4ekVtKPsogA3PKFwKbnB5lRpMA3",
+      "order": 1769792634826,
+      "updatedAt": "2026-01-30T17:05:10.728Z",
+      "id": 9
+    },
+    {
+      "projectId": "aTvzggW",
+      "title": "front",
+      "description": "dev du front",
+      "createdAt": "2026-01-30T17:20:35.622Z",
+      "startDate": "2026-01-30T00:00:00.000Z",
+      "endDate": "2026-02-03T00:00:00.000Z",
+      "finishedAt": null,
+      "timeSpent": 0,
+      "status": "in-progress",
+      "priority": "high",
+      "dependencies": [],
+      "assignedTo": "pSCxta59IlRR9hf6ts9bKsyX3mZ2",
+      "order": 1769793677914,
+      "updatedAt": "2026-01-30T17:32:20.000Z",
+      "id": 10
+    },
+    {
+      "projectId": "cp76eyC",
+      "title": "backend",
+      "description": "dev du back",
+      "createdAt": "2026-01-30T18:02:51.005Z",
+      "startDate": "2026-01-30T00:00:00.000Z",
+      "endDate": "2026-02-02T00:00:00.000Z",
+      "finishedAt": null,
+      "timeSpent": 0,
+      "status": "done",
+      "priority": "high",
+      "dependencies": [],
+      "assignedTo": "pSCxta59IlRR9hf6ts9bKsyX3mZ2",
+      "order": 1769796243479,
+      "updatedAt": "2026-01-30T18:04:55.207Z",
+      "id": 11
+    },
+    {
+      "projectId": "cp76eyC",
+      "title": "frontend",
+      "description": "dev du front",
+      "createdAt": "2026-01-30T18:03:26.454Z",
+      "startDate": "2026-01-30T00:00:00.000Z",
+      "endDate": "2026-02-03T00:00:00.000Z",
+      "finishedAt": null,
+      "timeSpent": 0,
+      "status": "done",
+      "priority": "medium",
+      "dependencies": [],
+      "assignedTo": "b4ekVtKPsogA3PKFwKbnB5lRpMA3",
+      "order": 1769796243480,
+      "updatedAt": "2026-01-30T18:04:55.273Z",
+      "id": 12
     }
   ],
   "milestones": [
@@ -128,9 +231,9 @@
       "name": "qqdsq",
       "description": "",
       "date": "2026-01-23T00:00:00.000Z",
-      "isCompleted": false,
+      "isCompleted": true,
       "createdAt": "2026-01-23T04:00:29.899Z",
-      "updatedAt": "2026-01-23T04:42:07.160Z",
+      "updatedAt": "2026-01-30T16:43:15.421Z",
       "id": 1
     },
     {
@@ -152,6 +255,36 @@
       "createdAt": "2026-01-23T06:08:19.125Z",
       "updatedAt": "2026-01-23T06:08:19.125Z",
       "id": 3
+    },
+    {
+      "projectId": "72bF3AaHQK0qUArJs4Wp",
+      "name": "test",
+      "description": "cvbnnh",
+      "date": "2026-02-08T00:00:00.000Z",
+      "isCompleted": false,
+      "createdAt": "2026-01-30T16:43:30.812Z",
+      "updatedAt": "2026-01-30T16:43:30.812Z",
+      "id": 4
+    },
+    {
+      "projectId": "aTvzggW",
+      "name": "livrable1",
+      "description": "sdf",
+      "date": "2026-02-03T00:00:00.000Z",
+      "isCompleted": false,
+      "createdAt": "2026-01-30T17:18:41.484Z",
+      "updatedAt": "2026-01-30T17:18:58.998Z",
+      "id": 5
+    },
+    {
+      "projectId": "cp76eyC",
+      "name": "livrabre1",
+      "description": "sdf",
+      "date": "2026-02-02T00:00:00.000Z",
+      "isCompleted": false,
+      "createdAt": "2026-01-30T18:01:55.456Z",
+      "updatedAt": "2026-01-30T18:01:55.456Z",
+      "id": 6
     }
   ],
   "timeEntries": [],
@@ -162,7 +295,7 @@
       "userName": "test",
       "name": "test",
       "createdAt": "2026-01-23T00:36:36.262Z",
-      "updatedAt": "2026-01-23T13:25:54.426Z"
+      "updatedAt": "2026-01-30T17:01:46.080Z"
     },
     {
       "id": "9cWYsYXRCYP1L3SNl82pJpR5td53",
@@ -178,7 +311,39 @@
       "userName": "Amadou",
       "name": "Amadou",
       "createdAt": "2026-01-23T05:44:54.259Z",
-      "updatedAt": "2026-01-23T07:21:51.778Z"
+      "updatedAt": "2026-01-30T18:05:51.715Z"
+    },
+    {
+      "id": "l1UrTZVT3BZ4NgEnf6okrpF9aTv2",
+      "email": "madou@gmail.com",
+      "userName": "Madou",
+      "name": "Madou",
+      "createdAt": "2026-01-23T17:09:48.788Z",
+      "updatedAt": "2026-01-23T17:09:49.441Z"
+    },
+    {
+      "id": "AE7y46gx6UZ5XGKrYBM4BryTerL2",
+      "email": "ablo@gmail.com",
+      "userName": "Ablo",
+      "name": "Ablo",
+      "createdAt": "2026-01-23T17:10:26.909Z",
+      "updatedAt": "2026-01-23T17:10:27.303Z"
+    },
+    {
+      "id": "hEvVsS4PQUYZyudYIW8jiBGvKad2",
+      "email": "kadi@gmail.com",
+      "userName": "KADI",
+      "name": "KADI",
+      "createdAt": "2026-01-30T17:14:01.973Z",
+      "updatedAt": "2026-01-30T17:14:02.954Z"
+    },
+    {
+      "id": "Wt2V7ZZWjORjQDzFMvJHasbY2bw1",
+      "email": "majo@gmail.com",
+      "userName": "MAJO",
+      "name": "MAJO",
+      "createdAt": "2026-01-30T17:59:28.062Z",
+      "updatedAt": "2026-01-30T17:59:28.444Z"
     }
   ]
 }

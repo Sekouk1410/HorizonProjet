@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, map, firstValueFrom } from 'rxjs';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable, map, firstValueFrom, of } from 'rxjs';
 import { API_BASE } from '../config';
 import { User } from '../models/user.model';
 
@@ -25,8 +25,10 @@ export class UserService {
 
   // Récupérer des utilisateurs par une liste d'identifiants (json-server accepte des paramètres id répétés)
   getByIds$(ids: string[]): Observable<User[]> {
-    const params: any = {};
-    ids.forEach((id, idx) => { params[`id`] = ids; });
+    const list = Array.from(new Set((ids || []).map(x => String(x)).filter(Boolean)));
+    if (!list.length) return of([]);
+    let params = new HttpParams();
+    list.forEach(id => { params = params.append('id', id); });
     return this.http.get<User[]>(`${API_BASE}/users`, { params });
   }
 

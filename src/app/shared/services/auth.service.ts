@@ -22,7 +22,7 @@ export class AuthService {
       }
       const user = this.mapFirebaseUser(fbUser);
       this.currentUserSubject.next(user);
-      // sync user profile into json-server users collection
+      // Synchroniser le profil utilisateur dans la collection users de json-server
       this.users.upsert(user).catch(() => {});
     });
   }
